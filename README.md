@@ -5,7 +5,7 @@
 
 R code and data to replicate the analysis published in the article:
 
-Jeandron A, Saidi JM, Kapama A, Burhole M, Birembano F, Vandevelde T, Gasparrini A, Armstrong B, Cairncross S, Ensink JH. Water supply interruptions and suspected cholera incidence: a time-series regression in the Democratic Republic of the Congo. *Plos Medicine*. 2015;**12**(10):e1001893. [[freely available here]](http://www.ag-myresearch.com/2015_jeandron_plosmed.html)
+Jeandron A, Saidi JM, Kapama A, Burhole M, Birembano F, Vandevelde T, Gasparrini A, Armstrong B, Cairncross S, Ensink JH. Water supply interruptions and suspected cholera incidence: a time-series regression in the Democratic Republic of the Congo. *Plos Medicine*. 2015;**12**(10):e1001893. [[freely available here](http://www.ag-myresearch.com/2015_jeandron_plosmed.html)]
 
 
 --------------------------------------------------------------------------------

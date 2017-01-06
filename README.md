@@ -1,5 +1,5 @@
 
-### Updated code from Jeandron et al, Plos Med 2015
+### Updated Rcode and data from Jeandron PlosMed 2015
 
 --------------------------------------------------------------------------------
 

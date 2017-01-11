@@ -5,10 +5,10 @@
 #     a time-series regression"
 #   Aurelie Jeandron and colleagues
 #
-# 14 March 2016
-# * an updated version of this code, (hopefully) compatible with future
-#   versions of the software, is available at the personal website of the
-#   one of the authors (www.ag-myresearch.com)
+# Update: 11 January 2017
+# * an updated version of this code, compatible with future versions of the
+#   software, is available at:
+#   https://github.com/gasparrini/2015_jeandron_PlosMed_Rcodedata
 ################################################################################
 
 # LOAD THE PACKAGES REQUIRED FOR THE ANALYSIS

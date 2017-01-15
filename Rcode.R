@@ -1,11 +1,12 @@
 ################################################################################
-# R code reproducing the analysis in:
+# Updated version of the code for the analysis in:
 #
 #   "Water supply interruptions and suspected cholera incidence:
 #     a time-series regression"
 #   Aurelie Jeandron and colleagues
+#   http://www.ag-myresearch.com/2015_jeandron_plosmed.html
 #
-# Update: 11 January 2017
+# Update: 15 January 2017
 # * an updated version of this code, compatible with future versions of the
 #   software, is available at:
 #   https://github.com/gasparrini/2015_jeandron_PlosMed_Rcodedata

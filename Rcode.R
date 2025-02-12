@@ -35,6 +35,7 @@ spl <- bs(data$date2, degree=3, df=64)
 
 ################################################################################
 # PLOTTING SERIES OF CHOLERA, CHLORINE, VOLUME and RAIN (Figure 1)
+
 tiff(filename="figure1.tif", width=3, height=5, units="in",pointsize=8, res=300)
 layout(matrix(c(1,2,3,4),4,1, byrow=TRUE), heights=c(1.5,1.5,1,1))
 layout.show(4)
@@ -49,6 +50,7 @@ par(mar=c(5,4,4,1)+0.1)
 
 ################################################################################
 # PLOTTING MEAN INCIDENCE OF SUSPECTED CHOLERA AT LAG 6 BY QUINTILE OF VOLUME SUPPLIED AT LAG 0(Figure 2)
+
 data$chol_lag6<-Lag(data$cholera, 6)
 cutoffs<-round(quantile(data$vol1000, probs=0:5/5, na.rm=TRUE), digits=2)
 data$volq<-cut(data$vol1000, breaks=cutoffs, include.lowest=TRUE)
@@ -59,6 +61,7 @@ plotmeans(chol_lag6~volq, data, ylim=c(2, 4),
   ylab="Mean and 95% CI of the number of \nsuspected cholera cases at lag 6",
   barcol="black", legends=c("0 to 2.87","2.88 to 3.53","3.54 to 3.96","3.97 to 4.36","4.37 to 5.75"))
 dev.off()
+
 ################################################################################
 # MAIN MODEL WITH CENTERING OF VOLUME AT 95th PERCENTILE (volcen)
 
@@ -69,20 +72,25 @@ model.basis<- crossbasis(data$vol1000, lag=12, argvar=list(df=1),
 model0 <- glm(cholera ~ model.basis+spl+dow+rain, data, family=quasipoisson)
 dres0 <- residuals(model0, "deviance")
 model0_ac <- update(model0,.~.+Lag(dres0,1:2))
+
 # PREDICT
 model0_ac.pred <- crosspred(model.basis, model0_ac, at=0:60/10, bylag=0.1,
   cen=volcen)
+
 # PLOTS
+
 # 12-DAY CUMULATIVE ASSOCIATION OF VOLUME OF TAP WATER SUPPLIED WITH SUSPECTED CHOLERA INCIDENCE IN UVIRA (Figure 3) 
 tiff(filename="figure3.tif", width=4, height=3, units="in",pointsize=8, res=300)
 plot(model0_ac.pred,"overall", xlab=expression(paste("Volume supplied (in 1,000 ",m^3," / day)")),ylab="RR suspected cholera incidence",ci="area", ylim=c(0,5),col="black")
 optstr1<-expression("Optimal volume supply (4,790" ~ m^{3}~"/ day)")
 axis(side=1, at=4.79, tick=TRUE, labels=c(optstr1), cex.axis=0.8, las=1, padj=-12, tck=0.5, lty=3, font=3)
 dev.off()
+
 # ASSOCIATION OF ABSENCE OF WATER SUPPLY WITH SUSPECTED CHOLERA INCIDENCE ON THE 12 FOLLOWING DAYS (Figure 4)
 tiff(filename="figure4.tif", width=4, height=3, units="in",pointsize=8, res=300)
 plot(model0_ac.pred, "slices", var=0,xlab="Lag (days)",ylab="RR cholera incidence",col="black",ci="area", ylim=c(0.8,1.3) )
 dev.off()
+
 # OVERALL CUMULATIVE RR AT VOLUME 0, WITH 95%CI
 model0_ac.pred$allRRfit["0"]
 model0_ac.pred$allRRlow["0"];model0_ac.pred$allRRhigh["0"]
@@ -125,8 +133,8 @@ model0_ac_high<-update(model0_high, .~.+acterm_high)
 model0_ac_high.pred<-crosspred(model.basis, model0_ac_high, at=0:60/10, 
   bylag=0.1, cen=volcen)
 
-
 # PLOTS
+
 # 12-DAY CUMULATIVE ASSOCIATION OF VOLUME OF TAP WATER SUPPLIED WITH CHOLERA INCIDENCE STRATIFIED BY NEIGHBOURHOODS WITH LOWER AND HIGHER ACCESS TO TAP WATER IN UVIRA (FIGURE NOT SHOWN)
 plot(model0_ac_low.pred,"overall",xlab=expression(paste("Volume supplied (in 1,000 ",m^3," / day)")),ylab="RR cholera incidence",ci="area", ci.arg=list(density=30, angle=-45, col=1), ylim=c(0,8),lty=2, lwd="2", col="black")
 lines(model0_ac_high.pred,"overall",ci="area", ci.arg=list(density=10, angle=45, col="black"), col="black", lty=3, lwd=2)
@@ -170,14 +178,16 @@ lines(0:60/10,predhigh,lty=3,lwd=1)
 legend("topright", c("Areas with lower tap water consumption","Areas with higher tap water consumption"), lty=c(2,3), lwd=c(1,1),cex=0.8,col=c("black", "black"))
 dev.off()
 par(mar=c(5,4,4,1)+0.1)
+
 # OVERALL CUMULATIVE RR AT VOLUME 0, WITH 95%CI
+
 # IN NEIGHBOURHOODS WITH LOWER TAP WATER CONSUMPTION
 model0_ac_low.pred$allRRfit["0"]
 model0_ac_low.pred$allRRlow["0"];model0_ac_low.pred$allRRhigh["0"]
+
 # IN NEIGHBOURHOODS WITH HIGHER TAP WATER CONSUMPTION
 model0_ac_high.pred$allRRfit["0"]
 model0_ac_high.pred$allRRlow["0"];model0_ac_high.pred$allRRhigh["0"]
-
 
 # ATTRIBUTABLE NUMBER AND FRACTION FOR LOW VOLUME IN NEIGHBOURHOODS WITH HIGHER TAP WATER CONSUMPTION
 attrdl(data$vol1000, model.basis, data$chol_highcov, model0_ac_high, type="an",
@@ -192,7 +202,9 @@ quantile(sim,c(2.5,97.5)/100)
 
 ################################################################################
 # SENSITIVITY ANALYSES FOR THE MODEL
+
 #### VARIATION OF #SPLINES ####
+
 splA <- bs(data$date2, degree=3, df=17)
 modelA.basis<- crossbasis(data$vol1000, lag=12, argvar=list(df=1),
   arglag=list(fun="poly", degree=2, int=F))
@@ -201,7 +213,6 @@ dresA <- residuals(modelA, "deviance")
 modelA_ac <- update(modelA, .~.+Lag(dresA, 1:2))
 modelA_ac.pred <- crosspred(modelA.basis, modelA_ac, at=0:6, cen=volcen)
 print(c( modelA_ac.pred$allRRfit["0"],modelA_ac.pred$allRRlow["0"],modelA_ac.pred$allRRhigh["0"]), digits=3)
-
 
 splB <- bs(data$date2, degree=3, df=68)
 modelB.basis<- crossbasis(data$vol1000, lag=12, argvar=list(df=1),
@@ -213,6 +224,7 @@ modelB_ac.pred <- crosspred(modelB.basis, modelB_ac, at=0:6, cen=volcen)
 print(c( modelB_ac.pred$allRRfit["0"],modelB_ac.pred$allRRlow["0"],modelB_ac.pred$allRRhigh["0"]), digits=3)
 
 ##### VARIATIONS in LAG-RESPONSE FUNCTION #######
+
 modelC.basis<-crossbasis(data$vol1000, lag=12, argvar=list(df=1),
   arglag=list(fun="poly", degree=2, int=T))
 modelD.basis<-crossbasis(data$vol1000, lag=12, argvar=list(df=1),
@@ -256,6 +268,7 @@ print(c( modelG_ac.pred$allRRfit["0"],modelG_ac.pred$allRRlow["0"],modelG_ac.pre
 
 
 ######### INCLUSION OF RESIDUAL CHLORINE LEVELS WITH DLNM STRUCTURE ####
+
 # GENERATE 95TH QUANTILE OF RESIDUAL CHLORINE LEVELS AND CHLORINE CROSS-BASIS CENTERED AT 95TH QUANTILE
 chlcen <- quantile(data$chlorine, probs=c(0.95), na.rm=T)
 data$chlorine[data$vol1000==0] <- mean(data$chlorine,na.rm=T)
@@ -270,6 +283,7 @@ modelH_ac.pred <- crosspred(model.basis, modelH_ac, at=0:6, cen=volcen)
 print(c( modelH_ac.pred$allRRfit["0"],modelH_ac.pred$allRRlow["0"],modelH_ac.pred$allRRhigh["0"]), digits=3)
 
 ###### ABSENCE OF EFFECT OF LOW CHLORINE LEVEL ####
+
 # GENERATE CHLORINE CROSS-BASIS CENTERED AT 0.8 MG/L
 chlorinehigh.basis<- crossbasis(data$chlorine, lag=12, argvar=list(df=1),
   arglag=list(fun="poly", degree=2, int=F))

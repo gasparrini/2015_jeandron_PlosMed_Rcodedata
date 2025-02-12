@@ -10,7 +10,7 @@ Jeandron A, Saidi JM, Kapama A, Burhole M, Birembano F, Vandevelde T, Gasparrini
 
 The material:
 
--   *Dataset.csv* stores the dataset used in analysis
+-   *Dataset.csv* stores the dataset used in the analysis
 -   *attrdl.R* creates the function for computing the attributable risk measures
 -   *attrdl.pdf* is the help page for the function `attrdl()`
 -   *Rcode.R* performs the analysis
